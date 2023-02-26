@@ -239,7 +239,9 @@ function render_interpolated_points() {
 
 function clear_canvas() {
     c.fillStyle = "#263238";
+    //c.globalAlpha = .7;
     c.fillRect(0, 0, w, h);
+    //c.globalAlpha = 1;
 }
 
 render_interpolated_points();
@@ -300,7 +302,6 @@ function render() {
     render_curve();
     render_curtain();
     render_control_points();
-
 
     render_segments();
 
