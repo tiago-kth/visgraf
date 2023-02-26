@@ -207,8 +207,8 @@ function render_control_points() {
     initial_points.forEach(point => {
 
         c.beginPath();
-        c.strokeStyle = 'yellow';
-        c.fillStyle = 'yellow';
+        c.strokeStyle = 'white';
+        c.fillStyle = 'white';
         c.arc(point.x, point.y, 10, 0, Math.PI * 2);
         c.fill();
         c.stroke();
@@ -225,9 +225,17 @@ function render_interpolated_points() {
 
         const {x, y} = point.getPosition();
 
+        let color;
+
+        if (i == interpolated_points.length - 1) {
+            color = 'green';
+        } else {
+            color = point.generation == 1 ? 'cyan' : 'yellow' 
+        }
+
         c.beginPath();
-        c.strokeStyle = i == interpolated_points.length - 1 ? 'green' : 'cyan';
-        c.fillStyle = i == interpolated_points.length - 1 ? 'green' : 'cyan';
+        c.strokeStyle = color;
+        c.fillStyle = color;
         c.arc(x, y, 5, 0, Math.PI * 2);
         c.fill();
         c.stroke();
@@ -244,6 +252,8 @@ function clear_canvas() {
     //c.globalAlpha = 1;
 }
 
+const older_segments = [];
+
 render_interpolated_points();
 
 function render_segments() {
@@ -253,9 +263,11 @@ function render_segments() {
         const {x: x0, y: y0} = segment.getInitial();
         const {x: x1, y: y1} = segment.getFinal();
 
+        //older_segments.push()
+
         c.beginPath();
-        c.strokeStyle = 'coral';
-        c.fillStyle = 'coral';
+        c.strokeStyle = segment.generation == 1 ? 'cyan' : 'yellow';
+        //c.fillStyle = 'lightcoral';
         c.moveTo(x0, y0);
         c.lineTo(x1, y1);
         c.lineWidth = 2;
@@ -295,6 +307,9 @@ function render_curve() {
 
 }
 
+// usar flags aqui para definir
+let segs = true;
+
 function render() {
 
     clear_canvas();
@@ -303,7 +318,7 @@ function render() {
     render_curtain();
     render_control_points();
 
-    render_segments();
+    if (segs) render_segments();
 
     render_interpolated_points();
 
@@ -312,10 +327,10 @@ function render() {
 
 gsap.to(interpolated_points, {
     t : 1,
-    duration: 5,
+    duration: 4,
     yoyo: true,
-    repeat: 2,
-    ease: 'none',
+    repeat: 10,
+    //ease: 'none',
 
     onUpdate: () => {
         interpolated_points.forEach(point => point.updatePosition());
