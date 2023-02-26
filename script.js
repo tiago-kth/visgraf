@@ -101,6 +101,12 @@ class IntermediatePoint extends Point {
         return { x: this.x, y:this.y };
     }
 
+    get_t() {
+
+        return this.t;
+
+    }
+
 }
 
 class Segment {
@@ -198,6 +204,34 @@ for (let generation = 1; generation <= n - 1; generation++) {
 
 }
 
+let sampled_segments = [];
+
+for (let t = 0; t <= 100; t++) {
+    
+    interpolated_points.forEach(point => {
+
+        point.updatePosition(t/100);
+
+    })
+
+    segments.forEach(segment => {
+
+        const {x: x0, y: y0} = segment.getInitial();
+        const {x: x1, y: y1} = segment.getFinal();
+
+        const generation = segment.generation;
+
+        const sampled_segment = { t: t/ 100, x0, y0, x1, y1, generation }
+
+        sampled_segments.push(sampled_segment);
+
+
+    })
+
+}
+
+interpolated_points.forEach(point => {point.t = 0});
+
 console.log( {initial_points, p, interpolated_points, segments });
 
 const c = cv.getContext('2d');
@@ -245,6 +279,36 @@ function render_interpolated_points() {
 
 }
 
+function render_sampled_segments() {
+
+    const current_t = curve_point.get_t();
+
+    const segments_to_render = sampled_segments.filter(d => d.t <= current_t);
+
+    segments_to_render.forEach(segment => {
+
+        const {x0, y0, x1, y1, generation, t} = segment;
+
+        let alpha = Math.pow(t / current_t, 2);
+        alpha = alpha < .1 ? 0 : alpha;
+
+        c.beginPath();
+        c.strokeStyle = generation == 1 ? 'cyan' : 'yellow';
+        //c.fillStyle = 'lightcoral';
+        c.globalAlpha = fade ? alpha : .5;
+        c.moveTo(x0, y0);
+        c.lineTo(x1, y1);
+        c.lineWidth = 1;
+        c.stroke();
+        c.closePath();
+        c.globalAlpha = 1;
+
+    })
+
+
+
+}
+
 function clear_canvas() {
     c.fillStyle = "#263238";
     //c.globalAlpha = .7;
@@ -254,7 +318,7 @@ function clear_canvas() {
 
 const older_segments = [];
 
-render_interpolated_points();
+//render_interpolated_points();
 
 function render_segments() {
 
@@ -309,15 +373,21 @@ function render_curve() {
 
 // usar flags aqui para definir
 let segs = true;
+let fade = true;
+let curve = true;
 
 function render() {
 
     clear_canvas();
 
-    render_curve();
-    render_curtain();
+    if (curve) {
+        render_curve();
+        render_curtain();
+    }
+
     render_control_points();
 
+    render_sampled_segments();
     if (segs) render_segments();
 
     render_interpolated_points();
