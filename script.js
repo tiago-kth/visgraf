@@ -64,7 +64,7 @@ class Point {
 
 class IntermediatePoint extends Point {
 
-    t = null;
+    t = 0;
 
     generation = null;
 
@@ -87,10 +87,12 @@ class IntermediatePoint extends Point {
 
     }
 
-    updatePosition() {
+    updatePosition(t) {
 
-        this.x = this.p0.x * (1 - this.t) + this.p1.x * this.t;
-        this.y = this.p0.y * (1 - this.t) + this.p1.y * this.t;
+        const t_ = t ? t : this.t
+
+        this.x = this.p0.x * (1 - t_) + this.p1.x * t_;
+        this.y = this.p0.y * (1 - t_) + this.p1.y * t_;
 
     }
 
@@ -103,10 +105,11 @@ class IntermediatePoint extends Point {
 
 class Segment {
 
-    t = null;
+    //t = null;
 
-    p0 = null;
-    p1 = null;
+    // don't store locally anymore, just the reference
+    //p0 = null;
+    //p1 = null;
 
     p0_ref = null;
     p1_ref = null;
@@ -118,10 +121,20 @@ class Segment {
         this.p0_ref = p0_ref;
         this.p1_ref = p1_ref;
 
+        this.generation = generation;
+
+    }
+
+    // no need to update, just update the actual points.
+
+    /*
+    updateSegment(t) {
+
+        this.p0_ref.updatePosition(t);
+        this.p1_ref.updatePosition(t);
+
         this.p0 = p0_ref.getPosition();
         this.p1 = p1_ref.getPosition();
-
-        this.generation = generation;
 
     }
 
@@ -131,13 +144,16 @@ class Segment {
         this.p1 = p1;
 
     }
+    */
 
     getInitial() {
-        return {x: this.p0.x, y: this.p0.y}
+        const p0 = this.p0_ref.getPosition();
+        return {x: p0.x, y: p0.y}
     }
 
     getFinal() {
-        return {x: this.p1.x, y: this.p1.y}
+        const p1 = this.p1_ref.getPosition();
+        return {x: p1.x, y: p1.y}
     }
 
 }
@@ -205,13 +221,13 @@ render_control_points();
 
 function render_interpolated_points() {
 
-    interpolated_points.forEach(point => {
+    interpolated_points.forEach( (point,i) => {
 
         const {x, y} = point.getPosition();
 
         c.beginPath();
-        c.strokeStyle = 'cyan';
-        c.fillStyle = 'cyan';
+        c.strokeStyle = i == interpolated_points.length - 1 ? 'green' : 'cyan';
+        c.fillStyle = i == interpolated_points.length - 1 ? 'green' : 'cyan';
         c.arc(x, y, 5, 0, Math.PI * 2);
         c.fill();
         c.stroke();
@@ -219,6 +235,11 @@ function render_interpolated_points() {
 
     })
 
+}
+
+function clear_canvas() {
+    c.fillStyle = "#263238";
+    c.fillRect(0, 0, w, h);
 }
 
 render_interpolated_points();
@@ -230,20 +251,74 @@ function render_segments() {
         const {x: x0, y: y0} = segment.getInitial();
         const {x: x1, y: y1} = segment.getFinal();
 
-        console.log(x0, y0, x1, y1);
-
         c.beginPath();
         c.strokeStyle = 'coral';
         c.fillStyle = 'coral';
         c.moveTo(x0, y0);
         c.lineTo(x1, y1);
+        c.lineWidth = 2;
         c.stroke();
         c.closePath();
-
 
     })
 
 }
 
-render_segments();
+const curve_point = interpolated_points[interpolated_points.length-1];
+
+function render_curtain() {
+    const {x, y} = curve_point.getPosition();
+
+    c.fillStyle = "#263238";
+    c.fillRect(x, 0, w-x, h);
+
+}
+
+function render_curve() {
+
+    const {x, y} = p[0][0].getPosition();
+
+    const {x: x1, y: y1} = p[0][1].getPosition();
+    const {x: x2, y: y2} = p[0][2].getPosition();
+    const {x: x3, y: y3} = p[0][3].getPosition();
+
+    c.beginPath();
+    c.moveTo(x,y)
+    c.strokeStyle = 'green';
+    c.fillStyle = 'green';
+    c.lineWidth = 10;
+    c.bezierCurveTo(x1,y1,x2,y2,x3,y3);
+    c.stroke();
+
+
+}
+
+function render() {
+
+    clear_canvas();
+
+    render_curve();
+    render_curtain();
+    render_control_points();
+
+
+    render_segments();
+
+    render_interpolated_points();
+
+}
+
+
+gsap.to(interpolated_points, {
+    t : 1,
+    duration: 5,
+    yoyo: true,
+    repeat: 2,
+    ease: 'none',
+
+    onUpdate: () => {
+        interpolated_points.forEach(point => point.updatePosition());
+        render();
+    }
+})
 
