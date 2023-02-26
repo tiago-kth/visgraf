@@ -18,3 +18,11 @@ body {
     height: 100vh;
     border: 2px solid crimson;
 }
+
+.initial-point {
+    fill: white;
+}
+
+.control-polygon {
+    stroke: white;
+}

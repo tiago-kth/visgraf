@@ -234,6 +234,42 @@ interpolated_points.forEach(point => {point.t = 0});
 
 console.log( {initial_points, p, interpolated_points, segments });
 
+
+// svg
+
+initial_points.forEach( (point,i) => {
+    
+    const new_circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+
+    new_circle.classList.add('initial-point');
+
+    new_circle.setAttribute('cx', point.x);
+    new_circle.setAttribute('cy', point.y);
+    new_circle.setAttribute('r', 10);
+
+    svg.appendChild(new_circle);
+
+    if ( i < initial_points.length - 1) {
+
+        const new_line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+
+        new_line.setAttribute('x1', point.x);
+        new_line.setAttribute('y1', point.y);
+
+        new_line.setAttribute('x2', initial_points[i+1].x);
+        new_line.setAttribute('y2', initial_points[i+1].y);
+
+        new_line.classList.add('control-polygon');
+
+        svg.append(new_line);
+
+    }
+
+
+})
+
+// canvas
+
 const c = cv.getContext('2d');
 
 function render_control_points() {
