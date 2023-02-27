@@ -205,34 +205,47 @@ for (let generation = 1; generation <= n - 1; generation++) {
 }
 
 let sampled_segments = [];
+let sampled_curve = [];
+const curve_point = interpolated_points[interpolated_points.length-1];
 
-for (let t = 0; t <= 100; t++) {
+for (let t = 0; t <= 1000; t++) {
     
     interpolated_points.forEach(point => {
 
-        point.updatePosition(t/100);
+        point.updatePosition(t/1000);
 
     })
 
-    segments.forEach(segment => {
+    if (t % 10 == 0) {
+        
+        segments.forEach(segment => {
 
-        const {x: x0, y: y0} = segment.getInitial();
-        const {x: x1, y: y1} = segment.getFinal();
+            const {x: x0, y: y0} = segment.getInitial();
+            const {x: x1, y: y1} = segment.getFinal();
 
-        const generation = segment.generation;
+            const generation = segment.generation;
 
-        const sampled_segment = { t: t/ 100, x0, y0, x1, y1, generation }
+            const sampled_segment = { t: t/ 1000, x0, y0, x1, y1, generation }
 
-        sampled_segments.push(sampled_segment);
+            sampled_segments.push(sampled_segment);
 
+        })
 
-    })
+    }
+
+    const {x, y} = curve_point.getPosition();
+
+    sampled_curve.push({x, y, sampled_t: t/1000 });
 
 }
 
-interpolated_points.forEach(point => {point.t = 0});
+// resets interpolated points to t = 0;
 
-console.log( {initial_points, p, interpolated_points, segments });
+curve_point.updatePosition(0);
+interpolated_points.forEach(point => { point.updatePosition(0); })
+
+
+console.log( {initial_points, p, interpolated_points, segments, sampled_curve, sampled_segments });
 
 
 // svg
@@ -298,7 +311,7 @@ function render_interpolated_points() {
         let color;
 
         if (i == interpolated_points.length - 1) {
-            color = 'green';
+            color = 'magenta';
         } else {
             color = point.generation == 1 ? 'cyan' : 'yellow' 
         }
@@ -341,7 +354,32 @@ function render_sampled_segments() {
 
     })
 
+}
 
+function render_sampled_curve() {
+
+    const current_t = curve_point.get_t();
+
+    const points_to_render = sampled_curve.filter(d => d.sampled_t <= current_t);
+
+    const p0 = points_to_render[0];
+    const {x0, y0} = p0;
+
+    c.beginPath();
+    c.strokeStyle = "magenta"
+    c.lineWidth = 2;
+    //c.fillStyle = 'lightcoral';
+    c.moveTo(x0, y0);
+
+    points_to_render.forEach(point => {
+
+        const {x,y} = point;
+        c.lineTo(x,y);
+
+    })
+
+    c.stroke();
+    c.closePath();
 
 }
 
@@ -378,8 +416,6 @@ function render_segments() {
 
 }
 
-const curve_point = interpolated_points[interpolated_points.length-1];
-
 function render_curtain() {
     const {x, y} = curve_point.getPosition();
 
@@ -398,8 +434,8 @@ function render_curve() {
 
     c.beginPath();
     c.moveTo(x,y)
-    c.strokeStyle = 'green';
-    c.fillStyle = 'green';
+    c.strokeStyle = 'magenta';
+    c.fillStyle = 'magenta';
     c.lineWidth = 10;
     c.bezierCurveTo(x1,y1,x2,y2,x3,y3);
     c.stroke();
@@ -416,10 +452,12 @@ function render() {
 
     clear_canvas();
 
+    /*
     if (curve) {
         render_curve();
         render_curtain();
-    }
+    }*/
+
 
     render_control_points();
 
@@ -427,6 +465,8 @@ function render() {
     if (segs) render_segments();
 
     render_interpolated_points();
+
+    render_sampled_curve();
 
 }
 
