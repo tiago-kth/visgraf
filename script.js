@@ -58,6 +58,14 @@ class Point {
     getPosition() {
 
         return { x: this.x, y: this.y };
+
+    }
+
+    changePosition(x,y) {
+
+        this.x = x;
+        this.y = y;
+
     }
 
 }
@@ -164,91 +172,120 @@ class Segment {
 
 }
 
-const interpolated_points = [];
-const segments = [];
+let interpolated_points, segments, sampled_segments, sampled_curve, curve_point;
 
-// p[generation][i]
-const p = [
-    []
-];
+function prepare_interpolated_points() {
 
-initial_points.forEach( (point,i) => {
+    interpolated_points = [];
+    segments = [];
 
-    p[0].push(new Point('p' + i, point.x, point.y ));
-    
-})
+    // p[generation][i]
 
-const n = initial_points.length;
+    p = [
+        []
+    ];
 
-for (let generation = 1; generation <= n - 1; generation++) {
+    initial_points.forEach( (point,i) => {
 
-    const last_gen = ( generation == n - 1 );
-
-    p.push([]);
-
-    for (let i = 0; i < n - generation; i++ ) {
-
-        const point = new IntermediatePoint('p' + generation + 'i', p[generation-1][i], p[generation-1][i+1], generation);
-        p[generation].push(point);
-        interpolated_points.push(point);
-
-        if (i > 0) {
-
-            const segment = new Segment(p[generation][i-1], p[generation][i], generation);
-
-            segments.push(segment);
-
-        }
-
-    }
-
-}
-
-let sampled_segments = [];
-let sampled_curve = [];
-const curve_point = interpolated_points[interpolated_points.length-1];
-
-for (let t = 0; t <= 1000; t++) {
-    
-    interpolated_points.forEach(point => {
-
-        point.updatePosition(t/1000);
-
-    })
-
-    if (t % 10 == 0) {
+        p[0].push(new Point('p' + i, point.x, point.y ));
         
-        segments.forEach(segment => {
-
-            const {x: x0, y: y0} = segment.getInitial();
-            const {x: x1, y: y1} = segment.getFinal();
-
-            const generation = segment.generation;
-
-            const sampled_segment = { t: t/ 1000, x0, y0, x1, y1, generation }
-
-            sampled_segments.push(sampled_segment);
-
-        })
-
+    })
+    
+    const n = initial_points.length;
+    
+    for (let generation = 1; generation <= n - 1; generation++) {
+    
+        const last_gen = ( generation == n - 1 );
+    
+        p.push([]);
+    
+        for (let i = 0; i < n - generation; i++ ) {
+    
+            const point = new IntermediatePoint('p' + generation + 'i', p[generation-1][i], p[generation-1][i+1], generation);
+            p[generation].push(point);
+            interpolated_points.push(point);
+    
+            if (i > 0) {
+    
+                const segment = new Segment(p[generation][i-1], p[generation][i], generation);
+    
+                segments.push(segment);
+    
+            }
+    
+        }
+    
     }
 
-    const {x, y} = curve_point.getPosition();
+}
 
-    sampled_curve.push({x, y, sampled_t: t/1000 });
+// creating a sampled database to help drawing the segments "shadow" and the actual curve
+
+function prepare_point_segment_samples() {
+
+    sampled_segments = [];
+    sampled_curve = [];
+
+    curve_point = interpolated_points[interpolated_points.length-1];
+
+    for (let t = 0; t <= 1000; t++) {
+    
+        interpolated_points.forEach(point => {
+    
+            point.updatePosition(t/1000);
+    
+        })
+    
+        if (t % 10 == 0) {
+            
+            segments.forEach(segment => {
+    
+                const {x: x0, y: y0} = segment.getInitial();
+                const {x: x1, y: y1} = segment.getFinal();
+    
+                const generation = segment.generation;
+    
+                const sampled_segment = { t: t/ 1000, x0, y0, x1, y1, generation }
+    
+                sampled_segments.push(sampled_segment);
+    
+            })
+    
+        }
+    
+        const {x, y} = curve_point.getPosition();
+    
+        sampled_curve.push({x, y, sampled_t: t/1000 });
+    
+    }
+
+
 
 }
+
 
 // resets interpolated points to t = 0;
+function reset_positions() {
 
-curve_point.updatePosition(0);
-interpolated_points.forEach(point => { point.updatePosition(0); })
+    curve_point.updatePosition(0);
+    interpolated_points.forEach(point => { point.updatePosition(0); })
+
+}
+
+function setup() {
+    prepare_interpolated_points();
+    prepare_point_segment_samples();
+    reset_positions();
+}
+
+setup();
 
 
-console.log( {initial_points, p, interpolated_points, segments, sampled_curve, sampled_segments });
+//console.log( {initial_points, p, interpolated_points, segments, sampled_curve, sampled_segments });
 
 
 // svg
+// we only create the svg elements, afterwards, the transition of visual changes will be handled by css
 
 initial_points.forEach( (point,i) => {
     
