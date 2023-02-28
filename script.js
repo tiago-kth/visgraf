@@ -97,10 +97,12 @@ class IntermediatePoint extends Point {
 
     updatePosition(t) {
 
-        const t_ = t ? t : this.t
+        const t_ = t == undefined ? this.t : t;
 
         this.x = this.p0.x * (1 - t_) + this.p1.x * t_;
         this.y = this.p0.y * (1 - t_) + this.p1.y * t_;
+
+        this.t = t_;
 
     }
 
@@ -264,18 +266,22 @@ function prepare_point_segment_samples() {
 }
 
 
-// resets interpolated points to t = 0;
-function reset_positions() {
+// resets interpolated points to t = 0; or a different t...
+function reset_positions(t = 0) {
 
-    curve_point.updatePosition(0);
-    interpolated_points.forEach(point => { point.updatePosition(0); })
+    console.log(t);
+
+    //curve_point.updatePosition(t);
+    console.log(curve_point, 'here');
+    interpolated_points.forEach(point => { point.updatePosition(t); })
+    console.log(curve_point, 'after here');
 
 }
 
-function setup() {
+function setup(t) {
     prepare_interpolated_points();
     prepare_point_segment_samples();
-    reset_positions();
+    reset_positions(t);
 }
 
 setup();
@@ -337,7 +343,7 @@ function render_control_points() {
 
 }
 
-render_control_points();
+// render_control_points();
 
 function render_interpolated_points() {
 
@@ -507,17 +513,113 @@ function render() {
 
 }
 
+let tl = new gsap.timeline()
+  .to(interpolated_points, {
+        t : 1,
 
-gsap.to(interpolated_points, {
-    t : 1,
-    duration: 4,
-    yoyo: true,
-    repeat: 10,
-    //ease: 'none',
+        duration: 4,
+        yoyo: true,
+        repeat: 20,
+        //ease: 'none',
+    
+        onUpdate: () => {
+            interpolated_points.forEach(point => point.updatePosition());
+            render();
+        },
 
-    onUpdate: () => {
-        interpolated_points.forEach(point => point.updatePosition());
-        render();
+        onRepeat: () => {
+            indo = !indo;
+        }
+    })
+    .pause();
+
+let indo = true;
+
+
+function update() {
+    tl.pause();
+    initial_points[1].x = 350;
+    initial_points[1].y = 150;
+    const t_atual = curve_point.get_t();
+    setup(t_atual);
+
+    if (indo) {
+
+        indo = false;
+
+        tl = gsap.timeline().fromTo(interpolated_points, {t: t_atual}, {
+            t : 1,
+    
+            duration: 4 * (1 - t_atual),
+            //ease: 'none',
+        
+            onUpdate: () => {
+                interpolated_points.forEach(point => point.updatePosition());
+                render();
+            }
+        })
+        .to(interpolated_points, {
+
+            t : 0,
+
+            duration: 4,
+            yoyo: true,
+            repeat: 20,
+            //ease: 'none',
+        
+            onUpdate: () => {
+                interpolated_points.forEach(point => point.updatePosition());
+                render();
+            },
+    
+            onRepeat: () => {
+                indo = !indo;
+            }
+
+        });
+
+    } else {
+
+        indo = true;
+
+        tl = gsap.timeline().fromTo(interpolated_points, {t: t_atual}, {
+            t : 0,
+    
+            duration: 4 * (t_atual),
+            //ease: 'none',
+        
+            onUpdate: () => {
+                interpolated_points.forEach(point => point.updatePosition());
+                render();
+            }
+        })
+        .to(interpolated_points, {
+
+            t : 1,
+
+            duration: 4,
+            yoyo: true,
+            repeat: 20,
+            //ease: 'none',
+        
+            onUpdate: () => {
+                interpolated_points.forEach(point => point.updatePosition());
+                render();
+            },
+    
+            onRepeat: () => {
+                indo = !indo;
+            }
+
+        });
+
     }
-})
+
+    
+
+
+
+}
+
+
 
