@@ -22,15 +22,15 @@ div.main {
     font-family: 'Alegreya Sans';
     font-size: 1.5rem;
     letter-spacing: .03em;
-    border: 20px solid white
 }
 
 h1 {
 
     max-width: 300px;
     text-align: center;
-    text-shadow: 0 0 10px black;
+    text-shadow: 0 0 10px whitesmoke;
     margin: 0 auto;
+    color: #333;
 
 }
 
@@ -61,16 +61,94 @@ h1 {
     position: absolute;
     top: 0;
     left: 0;
-    border: 2px solid crimson;
     width: 100%;
-    height: 100vh;
+    height: 100%;
+}
+
+.canvas-container,
+.svg-container {
+    /*height: 80vh;*/
+}
+
+.wrapper {
+    position: relative;
+    height: 80vh;
+}
+
+.controls {
+    height: 20vh;
+    border: 1px solid white;
+    color: ghostwhite;
+    padding: 1em;
+    font-family: 'Fira Code';
+    font-size: .8rem; 
+}
+
+.controls p {
+      
+}
+
+.controls label {
+    font-weight: 300;
+}
+
+/* Button play and slider */
+.controls .play-pause {
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 1em;
+    height: 3rem;
+
+}
+
+.controls .btn-play {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2rem;
+    height: 2rem;
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+    color: #333;
+    margin-right: 1em;
+}
+
+.controls .btn-play[data-mode="paused"]::before { content: "\23F5"; }
+.controls .btn-play[data-mode="playing"]::before { content: "\23F8"; }
+
+.slider-wrapper {
+    position: relative;
+    width: 200px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
+}
+
+.slider-wrapper input[type="range"] {
+    width: 100%;
+    height: 100%;
+}
+
+.slider-wrapper span.label {
+    position: absolute;
+    font-size: .8em;
+    font-weight: 300;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.controls datalist option {
+    color: ghostwhite;
 }
 
 .canvas-container-opening {
 
     width: 100%;
     height: 100vh;
-    border: 2px solid green;
 
 }
 

@@ -616,11 +616,66 @@ function update() {
 
     }
 
-    
+}
+
+// UI
+
+const inputs_parameters = [
+
+    {
+        name: 'play_pause_btn',
+        ref: '.controls .btn-play',
+        type: 'click',
+        handler: (self) => {
+
+            console.log(self);
+            if (self.el.dataset.mode == 'paused') {
+                tl.play();
+                self.el.dataset.mode = 'playing';
+            } else {
+                tl.pause();
+                self.el.dataset.mode = 'paused';
+            }
+
+        }
+    }
 
 
+]
+
+class UI_component {
+
+    ref = null;
+    el = null;
+
+    type = null;
+    handler = null;
+
+    constructor(ref, type_event, handler) {
+
+        this.ref = ref;
+        this.el = document.querySelector(ref);
+        this.type = type_event;
+        this.handler = handler;
+
+        this.monitor();
+
+
+    }
+
+    monitor() {
+
+        this.el.addEventListener(this.type, e => this.handler(this));
+
+    }
 
 }
 
+const inputs = {};
 
+inputs_parameters.forEach(input_parameter => {
+
+    inputs[input_parameter.name] = new UI_component(input_parameter.ref, input_parameter.type, input_parameter.handler);
+
+})
 

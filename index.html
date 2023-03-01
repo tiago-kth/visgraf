@@ -7,7 +7,7 @@
     <title>De Casteljau's Algorithm</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,100;0,300;0,400;0,500;0,700;0,800;0,900;1,400&family=Alegreya:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,100;0,300;0,400;0,500;0,700;0,800;0,900;1,400&family=Alegreya:wght@400;500;600;700;800;900&family=Fira+Code:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -19,7 +19,7 @@
     <div class="text-container">
 
         <div class="title">
-            
+
             <h1>Visualizing the de Casteljau's Algorithm</h1>
 
             <p>A bonus project for the course "Introduction to Visualization and Computer Graphis", very much inspired by <a href="https://www.patreon.com/acegikmo">Freya Hólmer</a>'s "<a href="https://www.youtube.com/watch?v=aVwxzDHniEw&t=1219s">The beauty of Bézier's Curves</a>"</p>
@@ -33,16 +33,48 @@
 
     <div class="main">
 
-        <div class="canvas-container">
-            <canvas class="the-canvas"></canvas>
-            
+        <div class="controls">
+
+            <p>The Bézier curve is built as a combination of linear interpolations, controlled by a single parameter <span class="concept">t</span>. You can press <span class="highlight">PLAY</span> to let <span class="concept">t</span> go automatically from 0 to 1 (and then backwards from 1 to 0, and so on), or you can use the <span class="highlight">slider</span> to manually set <span class="concept">t</span>.</p>
+
+            <div class="play-pause">
+                <button class="btn-play" data-mode="paused"></button>
+                <div class="slider-wrapper">
+                    <span class="label">t</span>
+                    <input type="range" id="volume" name="volume"
+                           min="0" max="1" step="0.01" list="values">
+                    <label for="volume">t</label>
+                    <datalist id="values">
+                        <option value="0.00" label="0.00"></option>
+                        <option value="0.25" label="0.25"></option>
+                        <option value="0.50" label="0.50"></option>
+                        <option value="0.75" label="0.75"></option>
+                        <option value="1.00" label="1.00"></option>
+                      </datalist>
+                </div>
+            </div>
+
+            <div class="container-checkbox">
+                <input type="checkbox" id="ctrl-segments" name="segments" checked>
+                <label for="ctrl-segments">Show interpolating segments</label>
+            </div>
+
         </div>
-    
-    
-        <div class="svg-container">
-            <svg>
-    
-            </svg>
+
+        <div class="wrapper">
+
+            <div class="canvas-container">
+                <canvas class="the-canvas"></canvas>
+                
+            </div>
+        
+        
+            <div class="svg-container">
+                <svg>
+        
+                </svg>
+            </div>
+
         </div>
 
     </div>

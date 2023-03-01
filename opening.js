@@ -241,8 +241,8 @@ gsap.to(op_array, {
 
     //color: 'hsl(180, 100%, 50%)',
 
-    duration: 10,
-    repeat: 4,
+    duration: 20,
+    repeat: 20,
     yoyo: true,
 
     ease: 'none',
