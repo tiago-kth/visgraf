@@ -216,6 +216,9 @@ function get_future_position(i, set, p) {
 
         Math.random() * w_op,
         Math.random() * h_op
+        //(p == 'p1' || p == 'p2') ? w_op - set[p + '_x'] : set[p + '_x'],
+        //(p == 'p1' || p == 'p2') ? set[p + '_y'] : h_op - set[p + '_x'],
+         
         //inc * Math.cos(Math.PI * w) + set[p + '_x'],
         //inc * Math.sin(Math.PI * w) + set[p + '_y']
     ];
@@ -227,14 +230,14 @@ render_op();
 
 gsap.to(op_array, {
 
-    p0_x : (i, set) => w_op - get_future_position(i, set, 'p0')[0],
-    p0_y : (i, set) => h_op - get_future_position(i, set, 'p0')[1],
+    p0_x : (i, set) => get_future_position(i, set, 'p0')[0],
+    p0_y : (i, set) => get_future_position(i, set, 'p0')[1],
     p1_x : (i, set) => get_future_position(i, set, 'p1')[0],
-    p1_y : (i, set) => h_op - get_future_position(i, set, 'p1')[1],
+    p1_y : (i, set) => get_future_position(i, set, 'p1')[1],
     p2_x : (i, set) => get_future_position(i, set, 'p2')[0],
-    p2_y : (i, set) => h_op - get_future_position(i, set, 'p2')[1],
-    p3_x : (i, set) => w_op - get_future_position(i, set, 'p3')[0],
-    p3_y : (i, set) => h_op - get_future_position(i, set, 'p3')[1],
+    p2_y : (i, set) => get_future_position(i, set, 'p2')[1],
+    p3_x : (i, set) => get_future_position(i, set, 'p3')[0],
+    p3_y : (i, set) => get_future_position(i, set, 'p3')[1],
 
     //color: 'hsl(180, 100%, 50%)',
 
