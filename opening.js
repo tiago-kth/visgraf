@@ -93,7 +93,7 @@ for (let n = 0; n < 100; n++ ) {
 
 function render_op() {
 
-    ctxOp.fillStyle = '#333';
+    ctxOp.fillStyle = 'white';//'#333';
     ctxOp.fillRect(0, 0, w_op, h_op);
 
     op_array.forEach(c => {

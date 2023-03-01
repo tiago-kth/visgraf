@@ -540,6 +540,7 @@ function update() {
     tl.pause();
     initial_points[1].x = 350;
     initial_points[1].y = 150;
+    initial_points.push({x: 500, y: 600});
     const t_atual = curve_point.get_t();
     setup(t_atual);
 
