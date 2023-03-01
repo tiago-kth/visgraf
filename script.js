@@ -272,9 +272,9 @@ function reset_positions(t = 0) {
     console.log(t);
 
     //curve_point.updatePosition(t);
-    console.log(curve_point, 'here');
+    //console.log(curve_point, 'here');
     interpolated_points.forEach(point => { point.updatePosition(t); })
-    console.log(curve_point, 'after here');
+    //console.log(curve_point, 'after here');
 
 }
 
@@ -540,7 +540,13 @@ let tl = new gsap.timeline()
     .pause();
 
 let indo = true;
+let flag_t_manually_changed = false;
 
+function fixes_timeline() {
+
+
+
+}
 
 function update() {
     tl.pause();
@@ -656,10 +662,11 @@ const inputs_parameters = [
             console.log(self);
             if (self.el.dataset.mode == 'paused') {
                 
-                const t = inputs['slider'].el.value;
+                const t = +inputs['slider'].el.value;
                 console.log(t);
                 
                 reset_positions(t);
+                tl.progress(t);
                 tl.play();
                 self.el.dataset.mode = 'playing';
             } else {
@@ -680,6 +687,7 @@ const inputs_parameters = [
             update_slider_t_label(t);
             reset_positions(t);
             render();
+            flag_t_manually_changed = true;
     
         }
     }
