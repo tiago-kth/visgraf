@@ -542,19 +542,10 @@ let tl = new gsap.timeline()
 let indo = true;
 let flag_t_manually_changed = false;
 
-function fixes_timeline() {
 
+function fixes_timeline(t_atual) {
 
-
-}
-
-function update() {
-    tl.pause();
-    initial_points[1].x = 350;
-    initial_points[1].y = 150;
-    initial_points.push({x: 500, y: 600});
-    const t_atual = curve_point.get_t();
-    setup(t_atual);
+    //const t_atual = curve_point.get_t();
 
     if (indo) {
 
@@ -566,10 +557,8 @@ function update() {
             duration: 4 * (1 - t_atual),
             //ease: 'none',
         
-            onUpdate: () => {
-                interpolated_points.forEach(point => point.updatePosition());
-                render();
-            }
+            onUpdate: tick
+
         })
         .to(interpolated_points, {
 
@@ -580,10 +569,7 @@ function update() {
             repeat: 20,
             //ease: 'none',
         
-            onUpdate: () => {
-                interpolated_points.forEach(point => point.updatePosition());
-                render();
-            },
+            onUpdate: tick,
     
             onRepeat: () => {
                 indo = !indo;
@@ -601,10 +587,7 @@ function update() {
             duration: 4 * (t_atual),
             //ease: 'none',
         
-            onUpdate: () => {
-                interpolated_points.forEach(point => point.updatePosition());
-                render();
-            }
+            onUpdate: tick
         })
         .to(interpolated_points, {
 
@@ -615,10 +598,7 @@ function update() {
             repeat: 20,
             //ease: 'none',
         
-            onUpdate: () => {
-                interpolated_points.forEach(point => point.updatePosition());
-                render();
-            },
+            onUpdate: tick,
     
             onRepeat: () => {
                 indo = !indo;
@@ -627,6 +607,18 @@ function update() {
         });
 
     }
+
+}
+
+
+function update() {
+    tl.pause();
+    initial_points[1].x = 350;
+    initial_points[1].y = 150;
+    initial_points.push({x: 500, y: 600});
+    const t_atual = curve_point.get_t();
+    setup(t_atual);
+    fixes_timeline(t_atual);
 
 }
 
@@ -666,7 +658,7 @@ const inputs_parameters = [
                 console.log(t);
                 
                 reset_positions(t);
-                tl.progress(t);
+                fixes_timeline(t);
                 tl.play();
                 self.el.dataset.mode = 'playing';
             } else {
