@@ -8,15 +8,29 @@ body {
     color: gainsboro;
 }
 
+div.main {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+}
+
 .canvas-container,
 .svg-container,
 .text-container {
     position: absolute;
     top: 0;
     left: 0;
+    border: 2px solid crimson;
     width: 100%;
     height: 100vh;
-    border: 2px solid crimson;
+}
+
+.canvas-container-opening {
+
+    width: 100%;
+    height: 100vh;
+    border: 2px solid green;
+
 }
 
 .initial-point {

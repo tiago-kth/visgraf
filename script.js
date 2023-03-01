@@ -2,7 +2,7 @@
 /* init */
 
 const cv_container = document.querySelector('.canvas-container');
-const cv = document.querySelector('canvas');
+const cv = document.querySelector('.the-canvas');
 const svg = document.querySelector('svg');
 
 const h = +window.getComputedStyle(cv_container).height.slice(0,-2);
