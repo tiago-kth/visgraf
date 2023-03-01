@@ -37,6 +37,8 @@ const r = .2 * h_op;
 
 for (let n = 0; n < 100; n++ ) {
 
+    /* 
+
     // const w0 = noise.noise2D(last[0][0], last[0][1]);
     // const w1 = noise.noise2D(last[1][0], last[1][1]);
     // const w2 = noise.noise2D(last[2][0], last[2][1]);
@@ -65,7 +67,23 @@ for (let n = 0; n < 100; n++ ) {
 
     };
 
-    console.log(op_new_points);
+    */
+
+    const op_new_points = {
+
+        p0_x : Math.random() * w_op,
+        p0_y : Math.random() * h_op,
+        p1_x : Math.random() * w_op,
+        p1_y : Math.random() * h_op,
+        p2_x : Math.random() * w_op,
+        p2_y : Math.random() * h_op,
+        p3_x : Math.random() * w_op,
+        p3_y : Math.random() * h_op,
+        color: `hsl(${n * 30 % 360}, 80%, 60%)`
+
+    };
+
+
 
     //console.log(op_new_points);
 
@@ -81,7 +99,7 @@ function render_op() {
     op_array.forEach(c => {
 
         //ctxOp.lineWidth = 2;
-        ctxOp.globalAlpha = .5;
+        ctxOp.globalAlpha = .75;
         ctxOp.lineWidth = 5;
         ctxOp.beginPath()
         ctxOp.arc(c.p0_x, c.p0_y, 4, 0, 2*Math.PI);
@@ -193,10 +211,13 @@ const inc = 100;
 
 function get_future_position(i, set, p) {
 
-    const w = (Math.random() - 0.5 ) * 2;//noise.noise2D(set[p + '_x'], set[p + '_y']);
+    //const w = (Math.random() - 0.5 ) * 2;//noise.noise2D(set[p + '_x'], set[p + '_y']);
     return [
-        inc * Math.cos(Math.PI * w) + set[p + '_x'],
-        inc * Math.sin(Math.PI * w) + set[p + '_y']
+
+        Math.random() * w_op,
+        Math.random() * h_op
+        //inc * Math.cos(Math.PI * w) + set[p + '_x'],
+        //inc * Math.sin(Math.PI * w) + set[p + '_y']
     ];
 
 }
@@ -215,9 +236,9 @@ gsap.to(op_array, {
     p3_x : (i, set) => w_op - get_future_position(i, set, 'p3')[0],
     p3_y : (i, set) => h_op - get_future_position(i, set, 'p3')[1],
 
-    color: 'hsl(180, 100%, 50%)',
+    //color: 'hsl(180, 100%, 50%)',
 
-    duration: 5,
+    duration: 10,
     repeat: 4,
     yoyo: true,
 
