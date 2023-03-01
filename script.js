@@ -513,6 +513,15 @@ function render() {
 
 }
 
+function tick() {
+
+    interpolated_points.forEach(point => point.updatePosition());
+    render();
+    const t = curve_point.get_t();
+    update_slider_t(t);
+
+}
+
 let tl = new gsap.timeline()
   .to(interpolated_points, {
         t : 1,
@@ -522,10 +531,7 @@ let tl = new gsap.timeline()
         repeat: 20,
         //ease: 'none',
     
-        onUpdate: () => {
-            interpolated_points.forEach(point => point.updatePosition());
-            render();
-        },
+        onUpdate: tick,
 
         onRepeat: () => {
             indo = !indo;
@@ -649,6 +655,11 @@ const inputs_parameters = [
 
             console.log(self);
             if (self.el.dataset.mode == 'paused') {
+                
+                const t = inputs['slider'].el.value;
+                console.log(t);
+                
+                reset_positions(t);
                 tl.play();
                 self.el.dataset.mode = 'playing';
             } else {
@@ -667,6 +678,8 @@ const inputs_parameters = [
 
             const t = self.el.value;
             update_slider_t_label(t);
+            reset_positions(t);
+            render();
     
         }
     }
