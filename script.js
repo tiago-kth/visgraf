@@ -620,6 +620,25 @@ function update() {
 
 // UI
 
+// helper
+function update_slider_t_label(t) {
+
+    const slider_t_label = document.querySelector('.slider-wrapper span.label');
+    const t_formatted = new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(t);
+    
+    slider_t_label.textContent = t_formatted;
+    slider_t_label.style.left = Math.round(t * 100) + '%';
+
+}
+
+function update_slider_t(t) {
+
+    const slider = inputs['slider'].el;
+    slider.value = t;
+    update_slider_t_label(t);
+
+}
+
 const inputs_parameters = [
 
     {
@@ -637,6 +656,18 @@ const inputs_parameters = [
                 self.el.dataset.mode = 'paused';
             }
 
+        }
+    },
+
+    {
+        name: 'slider',
+        ref: 'input[type="range"]',
+        type: 'input',
+        handler: (self) => {
+
+            const t = self.el.value;
+            update_slider_t_label(t);
+    
         }
     }
 
