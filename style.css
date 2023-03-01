@@ -14,6 +14,47 @@ div.main {
     width: 100%;
 }
 
+.title {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-content: center;
+    font-family: 'Alegreya Sans';
+    font-size: 1.5rem;
+    letter-spacing: .03em;
+    border: 20px solid white
+}
+
+h1 {
+
+    max-width: 300px;
+    text-align: center;
+    text-shadow: 0 0 10px black;
+    margin: 0 auto;
+
+}
+
+.title p {
+    max-width: 400px;
+    text-align: center;
+    font-size: 1rem;
+    margin: 1rem auto;
+    background-color: whitesmoke;
+    color: #333;
+    padding: .5em;
+    border-radius: .5em;
+    font-weight: 300;
+}
+
+.title a {
+    color: gray;
+}
+
+
+.opening {
+    filter: blur(8px);
+}
+
 .canvas-container,
 .svg-container,
 .text-container {
