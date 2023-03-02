@@ -332,7 +332,7 @@ const dialog_new_point = {
 
     margin: 20,
 
-    tentative_circle : null,
+    pos : null,
 
     el : document.querySelector('.dialog-new-point'),
 
@@ -340,32 +340,36 @@ const dialog_new_point = {
 
     btn_no : document.querySelector('.dialog-new-point button.no'),
 
-    fire : (pos) => {
-        dialog_new_point.el.classList.add('yes-no');
-        dialog_new_point.move_dialog(pos);
-        dialog_new_point.create_circle(pos);
-
+    init_buttons : () => {
         dialog_new_point.btn_yes.addEventListener('click', dialog_new_point.handler_yes);
 
         dialog_new_point.btn_no.addEventListener('click', dialog_new_point.handler_no);
+    },
+
+    fire : (pos) => {
+        dialog_new_point.pos = pos;
+        dialog_new_point.el.classList.add('yes-no');
+        dialog_new_point.move_dialog(pos);
+        dialog_new_point.create_circle(pos);
     },
 
     unfire : () => {
 
         dialog_new_point.el.classList.remove('yes-no');
 
-        dialog_new_point.btn_yes.removeEventListener('click', dialog_new_point.handler_yes);
+        // dialog_new_point.btn_yes.removeEventListener('click', dialog_new_point.handler_yes);
 
-        dialog_new_point.btn_yes.removeEventListener('click', dialog_new_point.handler_no);
+        // dialog_new_point.btn_yes.removeEventListener('click', dialog_new_point.handler_no);
 
     },
 
     create_circle : (pos) => {
 
-
         let tentative_circle = document.querySelector('.tentative-point');
 
         let no_previous_circle = tentative_circle == null;
+
+        console.log(no_previous_circle, tentative_circle);
 
         if (no_previous_circle) {
             tentative_circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
@@ -392,17 +396,23 @@ const dialog_new_point = {
 
         let tentative_circle = document.querySelector('.tentative-point');
 
+        const nof_circles = document.querySelectorAll('.initial-point').length;
+
+        console.log(tentative_circle);
+        tentative_circle.dataset.id = nof_circles;
         tentative_circle.classList.remove('tentative-point');
         tentative_circle.classList.add('initial-point', 'draggable');
-        dialog_new_point.unfire();
         dialog_new_point.reset_movement();
 
 
     },
 
     handler_yes : (e) => {
+        const pos = dialog_new_point.pos;
         console.log('yes, sir');
         dialog_new_point.convert_circle();
+        update_new_point(pos);
+        dialog_new_point.unfire();
 
     },
 
@@ -449,6 +459,8 @@ const dialog_new_point = {
     }
 
 }
+
+dialog_new_point.init_buttons();
 
 function makeDraggable() {
 
@@ -820,6 +832,18 @@ function update_static(id, coord) {
 
     tl.pause();
     initial_points[id] = coord;
+    const t_atual = curve_point.get_t();
+    setup(t_atual);
+    render();
+
+}
+
+function update_new_point(pos) {
+
+    console.log(pos);
+    //tl.pause();
+    pause_animation();
+    initial_points.push({x: pos.x, y: pos.y});
     const t_atual = curve_point.get_t();
     setup(t_atual);
     render();
