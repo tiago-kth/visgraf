@@ -387,7 +387,7 @@ function render_sampled_segments() {
         c.beginPath();
         c.strokeStyle = generation == 1 ? 'cyan' : 'yellow';
         //c.fillStyle = 'lightcoral';
-        c.globalAlpha = fade ? alpha : .5;
+        c.globalAlpha = render_flags.fade ? alpha : .5;
         c.moveTo(x0, y0);
         c.lineTo(x1, y1);
         c.lineWidth = 1;
@@ -410,7 +410,7 @@ function render_sampled_curve() {
 
     c.beginPath();
     c.strokeStyle = "magenta"
-    c.lineWidth = 2;
+    c.lineWidth = 4;
     //c.fillStyle = 'lightcoral';
     c.moveTo(x0, y0);
 
@@ -451,7 +451,7 @@ function render_segments() {
         //c.fillStyle = 'lightcoral';
         c.moveTo(x0, y0);
         c.lineTo(x1, y1);
-        c.lineWidth = 2;
+        c.lineWidth = 3;
         c.stroke();
         c.closePath();
 
@@ -487,9 +487,15 @@ function render_curve() {
 }
 
 // usar flags aqui para definir
-let segs = true;
-let fade = true;
-let curve = true;
+const render_flags = {
+
+    segments : true,
+    past_segments : true,
+    points : true,
+    fade : true
+
+}
+
 
 function render() {
 
@@ -501,13 +507,10 @@ function render() {
         render_curtain();
     }*/
 
-
     render_control_points();
-
-    render_sampled_segments();
-    if (segs) render_segments();
-
-    render_interpolated_points();
+    if (render_flags.past_segments) render_sampled_segments();
+    if (render_flags.segments) render_segments();
+    if (render_flags.points) render_interpolated_points();
 
     render_sampled_curve();
 
@@ -643,49 +646,6 @@ function update_slider_t(t) {
 
 }
 
-const inputs_parameters = [
-
-    {
-        name: 'play_pause_btn',
-        ref: '.controls .btn-play',
-        type: 'click',
-        handler: (self) => {
-
-            console.log(self);
-            if (self.el.dataset.mode == 'paused') {
-                
-                const t = +inputs['slider'].el.value;
-                console.log(t);
-                
-                reset_positions(t);
-                fixes_timeline(t);
-                tl.play();
-                self.el.dataset.mode = 'playing';
-            } else {
-                tl.pause();
-                self.el.dataset.mode = 'paused';
-            }
-
-        }
-    },
-
-    {
-        name: 'slider',
-        ref: 'input[type="range"]',
-        type: 'input',
-        handler: (self) => {
-
-            const t = self.el.value;
-            update_slider_t_label(t);
-            reset_positions(t);
-            render();
-            flag_t_manually_changed = true;
-    
-        }
-    }
-
-
-]
 
 class UI_component {
 
@@ -714,6 +674,92 @@ class UI_component {
     }
 
 }
+const inputs_parameters = [
+
+    {
+        name: 'play_pause_btn',
+        ref: '.controls .btn-play',
+        type: 'click',
+        handler: (self) => {
+
+            if (self.el.dataset.mode == 'paused') {
+                
+                const t = +inputs['slider'].el.value;
+                console.log(t);
+                
+                reset_positions(t);
+                fixes_timeline(t);
+                tl.play();
+                
+                self.el.dataset.mode = 'playing';
+
+            } else {
+                tl.pause();
+                self.el.dataset.mode = 'paused';
+            }
+
+        }
+    },
+
+    {
+        name: 'slider',
+        ref: 'input[type="range"]',
+        type: 'input',
+        handler: (self) => {
+
+            const t = self.el.value;
+            update_slider_t_label(t);
+            reset_positions(t);
+            render();
+            flag_t_manually_changed = true;
+    
+        }
+    },
+
+    {
+        name: 'points',
+        ref: '#ctrl-points',
+        type: 'click',
+        handler: (self) => {
+
+            const flag = self.el.name; // segments, points, past_segments
+            render_flags[flag] = self.el.checked;
+            console.log(flag, self.el.checked);
+            render();
+
+        }
+    },
+
+    {
+        name: 'segments',
+        ref: '#ctrl-segments',
+        type: 'click',
+        handler: (self) => {
+
+            const flag = self.el.name; // segments, points, past_segments
+            render_flags[flag] = self.el.checked;
+            console.log(flag, self.el.checked);
+            render();
+
+        }
+    },
+
+    {
+        name: 'past_segments',
+        ref: '#ctrl-past-segments',
+        type: 'click',
+        handler: (self) => {
+
+            const flag = self.el.name; // segments, points, past_segments
+            render_flags[flag] = self.el.checked;
+            console.log(flag, self.el.checked);
+            render();
+
+        }
+    },
+
+
+]
 
 const inputs = {};
 

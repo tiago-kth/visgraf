@@ -55,8 +55,21 @@
             </div>
 
             <div class="container-checkbox">
+                <input type="checkbox" id="ctrl-points" name="points" checked>
+                <label for="ctrl-points">Show interpolating points</label>
+            </div>
+
+            <div class="container-checkbox">
                 <input type="checkbox" id="ctrl-segments" name="segments" checked>
                 <label for="ctrl-segments">Show interpolating segments</label>
+            </div>
+
+            <div class="container-checkbox">
+                <input type="checkbox" id="ctrl-past-segments" name="past_segments" checked>
+                <label for="ctrl-past-segments">Keep past segments, <select name="ctrl-past-segments-fade" id="ctrl-past-segments-fade">
+                    <option value="fade">fading them</option>
+                    <option value="no-fade">without fading them</option>
+                </select></label>
             </div>
 
         </div>
