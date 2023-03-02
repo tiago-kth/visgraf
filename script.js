@@ -356,7 +356,7 @@ function makeDraggable() {
             selectedCircle.classList.add('dragging');
             pause_animation();
         }
-        console.log(e, id);
+
     }
     function drag(e) {
 
@@ -782,15 +782,14 @@ const inputs_parameters = [
             if (self.el.dataset.mode == 'paused') {
                 
                 const t = +inputs['slider'].el.value;
-                console.log(t);
                 
                 reset_positions(t);
                 fixes_timeline(t);
-                console.log('retomando... no handler do botao', indo)
+
                 resume_animation();
 
             } else {
-                console.log('pausando... no handler do botao', indo);
+
                 pause_animation()
             }
 
@@ -820,7 +819,6 @@ const inputs_parameters = [
 
             const flag = self.el.name; // segments, points, past_segments
             render_flags[flag] = self.el.checked;
-            console.log(flag, self.el.checked);
             render();
 
         }
@@ -848,7 +846,6 @@ const inputs_parameters = [
 
             const flag = self.el.name; // segments, points, past_segments
             render_flags[flag] = self.el.checked;
-            console.log(flag, self.el.checked);
             render();
 
         }
