@@ -297,7 +297,7 @@ initial_points.forEach( (point,i) => {
     
     const new_circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
 
-    new_circle.classList.add('initial-point');
+    new_circle.classList.add('initial-point', 'draggable');
 
     new_circle.setAttribute('cx', point.x);
     new_circle.setAttribute('cy', point.y);
@@ -305,6 +305,7 @@ initial_points.forEach( (point,i) => {
 
     svg.appendChild(new_circle);
 
+    /*
     if ( i < initial_points.length - 1) {
 
         const new_line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
@@ -319,7 +320,7 @@ initial_points.forEach( (point,i) => {
 
         svg.append(new_line);
 
-    }
+    }*/
 
 
 })
@@ -330,7 +331,7 @@ const c = cv.getContext('2d');
 
 function render_control_points() {
 
-    initial_points.forEach(point => {
+    initial_points.forEach( (point,i) => {
 
         c.beginPath();
         c.strokeStyle = 'white';
@@ -339,9 +340,22 @@ function render_control_points() {
         c.fill();
         c.stroke();
 
+        if ( i < initial_points.length - 1) {
+
+            c.beginPath();
+            c.moveTo(point.x, point.y);
+            c.lineTo(initial_points[i+1].x, initial_points[i+1].y);
+            c.lineWidth = 1;
+            c.stroke();
+            c.closePath();
+    
+        }
+
     })
 
 }
+
+render_control_points();
 
 // render_control_points();
 
