@@ -12,6 +12,8 @@ div.main {
     position: relative;
     height: 100vh;
     width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .title {
@@ -72,16 +74,69 @@ h1 {
 
 .wrapper {
     position: relative;
-    height: 80vh;
+    flex-basis: 100%;
+    /*height: 70vh;*/
+}
+
+.wrapper .dialog-new-point {
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translate(-1em, 1em);
+    transition: transform .4s;
+    width: 150px;
+    font-size: .6rem;
+    font-family: 'Fira Code';
+    font-weight: lighter;
+    text-align: center;
+    background-color: blanchedalmond;
+    color: #263238;
+    padding: .5em;
+    border-radius: .5em;
+
+}
+
+.yes-no-mode {
+    display: none;
+}
+
+.dialog-new-point.yes-no .passive {
+    display: none;
+}
+
+.dialog-new-point.yes-no .yes-no-mode {
+    display: block;
+}
+
+.yes-no-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.yes-no-buttons button {
+    flex-basis: 50%;
+    background-color: transparent;
+    border: 1px solid currentColor;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: inherit;
+}
+
+.yes-no-buttons button:hover {
+    background-color: #FFFFFF90; 
+}
+.yes-no-buttons button:active {
+    transform: translate(1px, 1px);
 }
 
 /* CONTROLS, UI */
 
 .controls {
-    height: 30vh;
+    /*height: 30vh;*/
     border: 1px solid white;
     color: ghostwhite;
     padding: 1em;
+    padding-top: 2rem;
     font-family: 'Fira Code';
     font-size: .8rem; 
 }

@@ -4,6 +4,8 @@
 const cv_container = document.querySelector('.canvas-container');
 const cv = document.querySelector('.the-canvas');
 const svg = document.querySelector('svg');
+//const el_controls = document.querySelector('.controls');
+//const H = wind
 
 const h = +window.getComputedStyle(cv_container).height.slice(0,-2);
 const w = +window.getComputedStyle(cv_container).width.slice(0,-2);
@@ -325,6 +327,16 @@ initial_points.forEach( (point,i) => {
 
 
 });
+
+const dialog_new_point = {
+
+    el : document.querySelector('.dialog-new-point'),
+
+    fire : () => {
+        dialog_new_point.el.classList.add('yes-no');
+    }
+
+}
 
 function makeDraggable() {
 
