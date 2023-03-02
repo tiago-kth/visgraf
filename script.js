@@ -269,7 +269,7 @@ function prepare_point_segment_samples() {
 // resets interpolated points to t = 0; or a different t...
 function reset_positions(t = 0) {
 
-    console.log(t);
+    //console.log(t);
 
     //curve_point.updatePosition(t);
     //console.log(curve_point, 'here');
@@ -757,6 +757,19 @@ const inputs_parameters = [
 
         }
     },
+
+    {
+        name: 'fade',
+        ref: 'select#ctrl-past-segments-fade',
+        type: 'change',
+        handler: (self) => {
+
+            render_flags['fade'] = self.el.value == 'fade';
+            console.log(self.el.value);
+            render();
+
+        }
+    }
 
 
 ]
