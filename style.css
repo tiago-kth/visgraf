@@ -189,3 +189,20 @@ select#ctrl-past-segments-fade {
 .control-polygon {
     stroke: white;
 }
+
+.draggable {
+    cursor: move;
+}
+
+.draggable:hover {
+    stroke: lightskyblue;
+    stroke-width: 3;
+
+}
+
+.dragging {
+    fill: transparent;
+    stroke-width: 3;
+    stroke: lightskyblue;
+    stroke-dasharray: 1;
+}

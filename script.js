@@ -298,6 +298,7 @@ initial_points.forEach( (point,i) => {
     const new_circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
 
     new_circle.classList.add('initial-point', 'draggable');
+    new_circle.dataset.id = i;
 
     new_circle.setAttribute('cx', point.x);
     new_circle.setAttribute('cy', point.y);
@@ -323,7 +324,68 @@ initial_points.forEach( (point,i) => {
     }*/
 
 
-})
+});
+
+function makeDraggable() {
+
+    // https://www.petercollingridge.co.uk/tutorials/svg/interactive/dragging/
+    // super good!
+
+    svg.addEventListener('mousedown', startDrag);
+    svg.addEventListener('mousemove', drag);
+    svg.addEventListener('mouseup', endDrag);
+    svg.addEventListener('mouseleave', endDrag);
+
+    function getMousePosition(e) {
+        const CTM = svg.getScreenCTM();
+        return {
+          x: (e.clientX - CTM.e) / CTM.a,
+          y: (e.clientY - CTM.f) / CTM.d
+        };
+      }
+
+    let selectedCircle;
+    let id;
+    let coord;
+
+    function startDrag(e) {
+
+        if (e.target.classList.contains('draggable')) {
+            selectedCircle = e.target;
+            id = +selectedCircle.getAttributeNS(null, 'data-id');
+            selectedCircle.classList.add('dragging');
+            pause_animation();
+        }
+        console.log(e, id);
+    }
+    function drag(e) {
+
+        if (selectedCircle) {
+
+            e.preventDefault();
+            coord = getMousePosition(e);
+            selectedCircle.setAttributeNS(null, "cx", coord.x);
+            selectedCircle.setAttributeNS(null, "cy", coord.y);
+            update_static(id, coord);
+
+        }
+
+    }
+
+    function endDrag(e) {
+
+        //resume_animation();
+
+        if (selectedCircle) {
+            selectedCircle.classList.remove('dragging');
+            selectedCircle = null;
+            
+        }
+
+    }
+}
+
+makeDraggable()
 
 // canvas
 
@@ -566,7 +628,7 @@ function fixes_timeline(t_atual) {
 
     if (indo) {
 
-        indo = false;
+        //indo = false;
 
         tl = gsap.timeline().fromTo(interpolated_points, {t: t_atual}, {
             t : 1,
@@ -574,7 +636,8 @@ function fixes_timeline(t_atual) {
             duration: 4 * (1 - t_atual),
             //ease: 'none',
         
-            onUpdate: tick
+            onUpdate: tick,
+            onComplete: () => indo = !indo
 
         })
         .to(interpolated_points, {
@@ -588,15 +651,13 @@ function fixes_timeline(t_atual) {
         
             onUpdate: tick,
     
-            onRepeat: () => {
-                indo = !indo;
-            }
+            onRepeat: () => indo = !indo
 
         });
 
     } else {
 
-        indo = true;
+        //indo = true;
 
         tl = gsap.timeline().fromTo(interpolated_points, {t: t_atual}, {
             t : 0,
@@ -604,7 +665,9 @@ function fixes_timeline(t_atual) {
             duration: 4 * (t_atual),
             //ease: 'none',
         
-            onUpdate: tick
+            onUpdate: tick,
+            onComplete: () => indo = !indo
+
         })
         .to(interpolated_points, {
 
@@ -617,9 +680,7 @@ function fixes_timeline(t_atual) {
         
             onUpdate: tick,
     
-            onRepeat: () => {
-                indo = !indo;
-            }
+            onRepeat: () => indo = !indo
 
         });
 
@@ -627,8 +688,30 @@ function fixes_timeline(t_atual) {
 
 }
 
+function update_static(id, coord) {
 
-function update() {
+    tl.pause();
+    initial_points[id] = coord;
+    const t_atual = curve_point.get_t();
+    setup(t_atual);
+    render();
+
+}
+
+function pause_animation() {
+    tl.pause();
+    //self.el.dataset.mode = 'paused';
+    inputs['play_pause_btn'].el.dataset.mode = 'paused';
+}
+
+function resume_animation() {
+    inputs['play_pause_btn'].el.dataset.mode = 'playing';
+    tl.play();
+    //self.el.dataset.mode = 'playing';
+
+}
+
+function update(id = null) {
     tl.pause();
     initial_points[1].x = 350;
     initial_points[1].y = 150;
@@ -703,13 +786,12 @@ const inputs_parameters = [
                 
                 reset_positions(t);
                 fixes_timeline(t);
-                tl.play();
-                
-                self.el.dataset.mode = 'playing';
+                console.log('retomando... no handler do botao', indo)
+                resume_animation();
 
             } else {
-                tl.pause();
-                self.el.dataset.mode = 'paused';
+                console.log('pausando... no handler do botao', indo);
+                pause_animation()
             }
 
         }
