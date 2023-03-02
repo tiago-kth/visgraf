@@ -36,10 +36,10 @@ h1 {
 
 }
 
-.title p {
+.title div.subtitle {
     max-width: 400px;
     text-align: center;
-    font-size: 1rem;
+    font-size: .9rem;
     margin: 1rem auto;
     background-color: whitesmoke;
     color: #333;
@@ -50,6 +50,12 @@ h1 {
 
 .title a {
     color: gray;
+}
+
+
+.author {
+    font-size: .6rem;
+    text-align: center;
 }
 
 
