@@ -330,10 +330,76 @@ initial_points.forEach( (point,i) => {
 
 const dialog_new_point = {
 
+    margin: 10,
+
     el : document.querySelector('.dialog-new-point'),
 
-    fire : () => {
+    btn_yes : document.querySelector('.dialog-new-point button.yes'),
+
+    btn_no : document.querySelector('.dialog-new-point button.no'),
+
+    fire : (pos) => {
         dialog_new_point.el.classList.add('yes-no');
+        dialog_new_point.move_dialog(pos);
+
+        dialog_new_point.btn_yes.addEventListener('click', dialog_new_point.handler_yes);
+
+        dialog_new_point.btn_no.addEventListener('click', dialog_new_point.handler_no);
+    },
+
+    unfire : () => {
+
+        dialog_new_point.el.classList.remove('yes-no');
+
+        dialog_new_point.btn_yes.removeEventListener('click', dialog_new_point.handler_yes);
+
+        dialog_new_point.btn_yes.removeEventListener('click', dialog_new_point.handler_no);
+
+    },
+
+    handler_yes : (e) => {
+        console.log('yes, sir');
+    },
+
+    handler_no : (e) => {
+        console.log('no, sir');
+        dialog_new_point.unfire();
+        dialog_new_point.reset_movement();
+    },
+
+    reset_movement : () => {
+
+        dialog_new_point.el.style.transform = '';
+
+    },
+
+    move_dialog : (pos) => {
+
+        const x = pos.x;
+        const y = pos.y;
+
+        const {width, height} = dialog_new_point.get_size();
+
+        // from right to left!
+        let tentative_x = (w - x - width/2);
+        console.log(w, x, tentative_x, width);
+
+        if (tentative_x < 0) tentative_x = dialog_new_point.margin;
+
+        if (tentative_x + width > w) tentative_x = w - width - dialog_new_point.margin;
+
+        let tentative_y = y - height - dialog_new_point.margin;
+
+        dialog_new_point.el.style.transform = `translate(${-tentative_x}px, ${tentative_y}px)`;
+
+    },
+
+    get_size : () => {
+        
+        const {width, height} = dialog_new_point.el.getBoundingClientRect();
+
+        return {width, height};
+
     }
 
 }
@@ -367,6 +433,10 @@ function makeDraggable() {
             id = +selectedCircle.getAttributeNS(null, 'data-id');
             selectedCircle.classList.add('dragging');
             pause_animation();
+        } else {
+            const pos = getMousePosition(e) 
+            dialog_new_point.fire(pos);
+            console.log(e);
         }
 
     }
