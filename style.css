@@ -262,6 +262,10 @@ select#ctrl-past-segments-fade {
     stroke-dasharray: 1;
 }
 
+circle {
+    transition: fill .4s, stroke .4s;
+}
+
 .tentative-point {
     fill: transparent;
     stroke-width: 3;

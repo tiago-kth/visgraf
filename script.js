@@ -330,7 +330,7 @@ initial_points.forEach( (point,i) => {
 
 const dialog_new_point = {
 
-    margin: 10,
+    margin: 20,
 
     tentative_circle : null,
 
@@ -374,7 +374,7 @@ const dialog_new_point = {
         tentative_circle.classList.add('tentative-point');
         tentative_circle.setAttribute('cx', pos.x);
         tentative_circle.setAttribute('cy', pos.y);
-        tentative_circle.setAttribute('r', 5);
+        tentative_circle.setAttribute('r', 10);
 
         if (no_previous_circle) svg.appendChild(tentative_circle);
 
@@ -388,8 +388,22 @@ const dialog_new_point = {
 
     },
 
+    convert_circle : () => {
+
+        let tentative_circle = document.querySelector('.tentative-point');
+
+        tentative_circle.classList.remove('tentative-point');
+        tentative_circle.classList.add('initial-point', 'draggable');
+        dialog_new_point.unfire();
+        dialog_new_point.reset_movement();
+
+
+    },
+
     handler_yes : (e) => {
         console.log('yes, sir');
+        dialog_new_point.convert_circle();
+
     },
 
     handler_no : (e) => {
