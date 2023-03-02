@@ -332,6 +332,8 @@ const dialog_new_point = {
 
     margin: 10,
 
+    tentative_circle : null,
+
     el : document.querySelector('.dialog-new-point'),
 
     btn_yes : document.querySelector('.dialog-new-point button.yes'),
@@ -341,6 +343,7 @@ const dialog_new_point = {
     fire : (pos) => {
         dialog_new_point.el.classList.add('yes-no');
         dialog_new_point.move_dialog(pos);
+        dialog_new_point.create_circle(pos);
 
         dialog_new_point.btn_yes.addEventListener('click', dialog_new_point.handler_yes);
 
@@ -357,6 +360,34 @@ const dialog_new_point = {
 
     },
 
+    create_circle : (pos) => {
+
+
+        let tentative_circle = document.querySelector('.tentative-point');
+
+        let no_previous_circle = tentative_circle == null;
+
+        if (no_previous_circle) {
+            tentative_circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        }
+
+        tentative_circle.classList.add('tentative-point');
+        tentative_circle.setAttribute('cx', pos.x);
+        tentative_circle.setAttribute('cy', pos.y);
+        tentative_circle.setAttribute('r', 5);
+
+        if (no_previous_circle) svg.appendChild(tentative_circle);
+
+    },
+
+    remove_circle : () => {
+
+        let tentative_circle = document.querySelector('.tentative-point');
+
+        tentative_circle.remove();
+
+    },
+
     handler_yes : (e) => {
         console.log('yes, sir');
     },
@@ -365,6 +396,7 @@ const dialog_new_point = {
         console.log('no, sir');
         dialog_new_point.unfire();
         dialog_new_point.reset_movement();
+        dialog_new_point.remove_circle();
     },
 
     reset_movement : () => {

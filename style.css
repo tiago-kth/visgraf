@@ -261,3 +261,11 @@ select#ctrl-past-segments-fade {
     stroke: lightskyblue;
     stroke-dasharray: 1;
 }
+
+.tentative-point {
+    fill: transparent;
+    stroke-width: 3;
+    stroke: lightskyblue;
+    stroke-dasharray: 1;
+    
+}
