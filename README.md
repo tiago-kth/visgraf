@@ -1,6 +1,6 @@
 Welcome!
 
-This is the code repository for "Visualizing the de Casteljau's Algorithm". 
+This is the code repository for "[Visualizing the de Casteljau's Algorithm](https://tiago-kth.github.io/visgraf/)". 
 
 It was a bonus project for [Tino Weinkauf](https://www.kth.se/profile/weinkauf)'s course ["Introduction to Visualization and Computer Graphics"](https://www.kth.se/student/kurser/kurs/DD2258?l=en), at KTH Royal Institute of Technology.
 
