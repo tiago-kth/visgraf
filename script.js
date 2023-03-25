@@ -10,35 +10,50 @@ const svg = document.querySelector('svg');
 const h = +window.getComputedStyle(cv_container).height.slice(0,-2);
 const w = +window.getComputedStyle(cv_container).width.slice(0,-2);
 
+const ratio = h/w;
+
+let h_canvas = h;
+let w_canvas = w;
+
+/*
+if (w <= 800) {
+    w_canvas = 800;
+    h_canvas = ratio * w_canvas;
+}*/
+
 console.log(w,h);
 
 svg.setAttribute('height', h);
 svg.setAttribute('width', w);
-svg.setAttribute('viewbox', `0 0 ${w} ${h}`);
+svg.setAttribute('viewbox', `0 0 ${w_canvas} ${h_canvas}`);
+svg.style.width = w + 'px';
+svg.style.height = h + 'px';
 
-cv.setAttribute('height', h);
-cv.setAttribute('width', w);
+cv.setAttribute('height', h_canvas);
+cv.setAttribute('width', w_canvas);
+cv.style.width = w + 'px';
+cv.style.height = h + 'px';
 
 
 const initial_points = [
     {
-        x: 200,
-        y: 300
+        x: 0.1 * w,
+        y: 0.8 * h
     },
 
     {
-        x: 400,
-        y: 200
+        x: 0.3 * w,
+        y: 0.3 * h
     },
 
     {
-        x: 500,
-        y: 100
+        x: 0.7 * w,
+        y: 0.3 * h
     },
 
     {
-        x: 600,
-        y: 400
+        x: 0.9 * w,
+        y: 0.8 * h
     }
 ];
 
