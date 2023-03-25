@@ -12,6 +12,8 @@ I hope to use the main "engine" to build an interactive explainer about de Caste
 
 Besides Tino's lectures, his recommended [Freya Hólmer's video about Bézier Curves](https://www.youtube.com/watch?v=aVwxzDHniEw) was also a great inspiration. She is awesome, check [her webpage](https://acegikmo.com/) and join [her Patreon](https://www.patreon.com/acegikmo).
 
+Feel free to explore the code, just keep in mind that it was all done in a hurry, in less than a week and amid many other stuff and my *real* main job: being a father of two little human beings uprooted from the Tropics to the Artic (ok, almost).
+ 
 [tiago.wtf](https://www.tiago.wtf/)
 
 
