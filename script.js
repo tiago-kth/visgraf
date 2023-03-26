@@ -575,6 +575,20 @@ function render_control_points() {
 render_control_points();
 
 // render_control_points();
+function get_color(generation) {
+    let max_gen = initial_points.length - 1;
+    let nof_new_colors = max_gen - 3;
+
+    const t_color = (generation - 1) / (nof_new_colors + 1);
+    
+    const color_rgb = {
+            r : ( (1 - t_color) * 0 + t_color * 255 ),// % 255,
+            g : ( (1 - t_color) * 255 + t_color * 255 ),// % 255,
+            b : ( (1 - t_color) * 255 + t_color * 0 )// % 255 
+        }
+        //color = point.generation == 1 ? 'cyan' : 'yellow'
+    return color_rgb;
+}
 
 function render_interpolated_points() {
 
@@ -582,17 +596,31 @@ function render_interpolated_points() {
 
         const {x, y} = point.getPosition();
 
-        let color;
+        // let max_gen = initial_points.length - 1;
+        // let nof_new_colors = max_gen - 3;
+
+        // const t_color = (point.generation - 1) / (nof_new_colors + 1);
+        // let color_rgb = {};
+        // console.log(nof_new_colors, point.generation - 1, t_color);
 
         if (i == interpolated_points.length - 1) {
-            color = 'magenta';
+            color_rgb = {r: 255, g: 0, b: 255};
         } else {
-            color = point.generation == 1 ? 'cyan' : 'yellow' 
+            color_rgb = get_color(point.generation);
+            // color_rgb = {
+            //     r : ( (1 - t_color) * 0 + t_color * 255 ),// % 255,
+            //     g : ( (1 - t_color) * 255 + t_color * 255 ),// % 255,
+            //     b : ( (1 - t_color) * 255 + t_color * 0 )// % 255
+            //}
+            //color = point.generation == 1 ? 'cyan' : 'yellow'
+
         }
 
+        //console.log(nof_new_colors, point.generation - 1, t_color, color_rgb);
+
         c.beginPath();
-        c.strokeStyle = color;
-        c.fillStyle = color;
+        c.strokeStyle = `rgb(${color_rgb.r}, ${color_rgb.g}, ${color_rgb.b})`;
+        c.fillStyle = `rgb(${color_rgb.r}, ${color_rgb.g}, ${color_rgb.b})`;
         c.arc(x, y, 5, 0, Math.PI * 2);
         c.fill();
         c.stroke();
@@ -615,8 +643,10 @@ function render_sampled_segments() {
         let alpha = Math.pow(t / current_t, 2);
         alpha = alpha < .1 ? 0 : alpha;
 
+        const color_rgb = get_color(generation);
+
         c.beginPath();
-        c.strokeStyle = generation == 1 ? 'cyan' : 'yellow';
+        c.strokeStyle = `rgb(${color_rgb.r}, ${color_rgb.g}, ${color_rgb.b})`;//generation == 1 ? 'cyan' : 'yellow';
         //c.fillStyle = 'lightcoral';
         c.globalAlpha = render_flags.fade ? alpha : .5;
         c.moveTo(x0, y0);
@@ -677,8 +707,13 @@ function render_segments() {
 
         //older_segments.push()
 
+        const color_rgb = get_color(segment.generation);
+
+
+
         c.beginPath();
-        c.strokeStyle = segment.generation == 1 ? 'cyan' : 'yellow';
+        c.strokeStyle = `rgb(${color_rgb.r}, ${color_rgb.g}, ${color_rgb.b})`;//generation == 1 ? 'cyan' : 'yellow';
+        //c.strokeStyle = segment.generation == 1 ? 'cyan' : 'yellow';
         //c.fillStyle = 'lightcoral';
         c.moveTo(x0, y0);
         c.lineTo(x1, y1);
