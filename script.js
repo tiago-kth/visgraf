@@ -21,7 +21,8 @@ if (w <= 800) {
     h_canvas = ratio * w_canvas;
 }*/
 
-console.log(w,h);
+//console.log(w,h);
+console.log('Welcome! :)');
 
 svg.setAttribute('height', h);
 svg.setAttribute('width', w);
@@ -384,7 +385,7 @@ const dialog_new_point = {
 
         let no_previous_circle = tentative_circle == null;
 
-        console.log(no_previous_circle, tentative_circle);
+        //console.log(no_previous_circle, tentative_circle);
 
         if (no_previous_circle) {
             tentative_circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
@@ -413,7 +414,7 @@ const dialog_new_point = {
 
         const nof_circles = document.querySelectorAll('.initial-point').length;
 
-        console.log(tentative_circle);
+        //console.log(tentative_circle);
         tentative_circle.dataset.id = nof_circles;
         tentative_circle.classList.remove('tentative-point');
         tentative_circle.classList.add('initial-point', 'draggable');
@@ -424,7 +425,7 @@ const dialog_new_point = {
 
     handler_yes : (e) => {
         const pos = dialog_new_point.pos;
-        console.log('yes, sir');
+        //console.log('yes, sir');
         dialog_new_point.convert_circle();
         update_new_point(pos);
         dialog_new_point.unfire();
@@ -432,7 +433,7 @@ const dialog_new_point = {
     },
 
     handler_no : (e) => {
-        console.log('no, sir');
+        //console.log('no, sir');
         dialog_new_point.unfire();
         dialog_new_point.reset_movement();
         dialog_new_point.remove_circle();
@@ -453,7 +454,7 @@ const dialog_new_point = {
 
         // from right to left!
         let tentative_x = (w - x - width/2);
-        console.log(w, x, tentative_x, width);
+        //console.log(w, x, tentative_x, width);
 
         if (tentative_x < 0) tentative_x = dialog_new_point.margin;
 
@@ -509,7 +510,7 @@ function makeDraggable() {
         } else {
             const pos = getMousePosition(e) 
             dialog_new_point.fire(pos);
-            console.log(e);
+            //console.log(e);
         }
 
     }
@@ -890,7 +891,7 @@ function update_static(id, coord) {
 
 function update_new_point(pos) {
 
-    console.log(pos);
+    //console.log(pos);
     //tl.pause();
     pause_animation();
     initial_points.push({x: pos.x, y: pos.y});
@@ -1034,7 +1035,7 @@ const inputs_parameters = [
 
             const flag = self.el.name; // segments, points, past_segments
             render_flags[flag] = self.el.checked;
-            console.log(flag, self.el.checked);
+            //console.log(flag, self.el.checked);
             render();
 
         }
@@ -1060,7 +1061,7 @@ const inputs_parameters = [
         handler: (self) => {
 
             render_flags['fade'] = self.el.value == 'fade';
-            console.log(self.el.value);
+            //console.log(self.el.value);
             render();
 
         }

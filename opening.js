@@ -14,7 +14,7 @@ const ctxOp = cv_op.getContext('2d');
 const noise = new SimplexNoise();
 
 // returns a value between -1 and 1
-console.log(noise.noise2D(200, 300));
+//console.log(noise.noise2D(200, 300));
 
 const op_first_points = {
 
@@ -158,7 +158,7 @@ function render_op() {
 
 }
 
-console.log(op_array);
+//console.log(op_array);
 
 function update_points() {
 
