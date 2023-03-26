@@ -5,6 +5,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>De Casteljau's Algorithm</title>
+
+    <meta name="author" content="tiago maranhao | tiago.wtf">
+    <meta name="description" content="An interactive tool for building Bézier curves and visualizing the De Casteljau's algorithm.">
+
+    <meta property="og:image" content="https://tiago-kth.github.io/visgraf/thumb.png">
+    <meta property="og:description" content="An interactive tool for building Bézier curves and visualizing the De Casteljau's algorithm.">
+    <meta property="og:title" content="Visualizing the de Casteljau's Algorithm">
+    <meta property="og:url" content="https://tiago-kth.github.io/visgraf/">
+    <meta property="og:type" content="website">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Visualizing the de Casteljau's Algorithm">
+    <meta name="twitter:description" content="An interactive tool for building Bézier curves and visualizing the De Casteljau's algorithm.">
+    <meta name="twitter:site" content="@tiagombp">
+    <meta name="twitter:creator" content="@tiagombp">
+    <meta name="twitter:image" content="https://tiago-kth.github.io/visgraf/thumb.png">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,100;0,300;0,400;0,500;0,700;0,800;0,900;1,400&family=Alegreya:wght@400;500;600;700;800;900&family=Fira+Code:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -39,7 +56,7 @@
 
         <div class="controls">
 
-            <p>The Bézier curve is built as a combination of linear interpolations, controlled by a single parameter <span class="concept">t</span>. You can press <span class="highlight">PLAY</span> to let <span class="concept">t</span> go automatically from 0 to 1 (and then backwards from 1 to 0, and so on), or you can use the <span class="highlight">slider</span> to manually set <span class="concept">t</span>.</p>
+            <p>The Bézier curve is built as a combination of linear interpolations, controlled by a single parameter <span class="concept">t</span>. You can press <span class="highlight">PLAY</span> to let <span class="concept">t</span> go automatically from 0 to 1 (and then backwards from 1 to 0, and so on), or you can use the <span class="highlight">slider</span> to manually set <span class="concept">t</span>. You can add more control points and move them around.</p>
 
             <div class="play-pause">
                 <button class="btn-play" data-mode="paused"></button>
